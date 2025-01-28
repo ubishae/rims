@@ -5,12 +5,14 @@ using RIMS.Domain.Entities;
 
 namespace RIMS.Application.Tickets.Queries.GetTickets;
 
-public record GetTickets : IRequest<IEnumerable<Ticket>>;
+public record GetTickets : IRequest<IEnumerable<TicketBriefDto>>;
 
-public class GetTicketsHandler(IApplicationDbContext context) : IRequestHandler<GetTickets, IEnumerable<Ticket>>
+public class GetTicketsHandler(IApplicationDbContext context, IMapper mapper) : IRequestHandler<GetTickets, IEnumerable<TicketBriefDto>>
 {
-    public async Task<IEnumerable<Ticket>> Handle(GetTickets request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<TicketBriefDto>> Handle(GetTickets request, CancellationToken cancellationToken)
     {
-        return await context.Tickets.ToListAsync(cancellationToken);
+        return await context.Tickets
+            .ProjectTo<TicketBriefDto>(mapper.ConfigurationProvider)
+            .ToListAsync(cancellationToken);
     }
 }

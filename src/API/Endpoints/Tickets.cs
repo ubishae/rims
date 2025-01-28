@@ -14,7 +14,7 @@ public class Tickets : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("api/tickets").WithTags("Tickets").WithOpenApi();
+        var group = app.MapGroup("api/v1/tickets").WithTags("Tickets").WithOpenApi();
         
         group.MapGet("/", GetTickets).WithName("GetTickets");
         group.MapPost("", CreateTicket).WithName("CreateTicket");
@@ -23,7 +23,7 @@ public class Tickets : ICarterModule
         group.MapDelete("/{id:int}", DeleteTicket).WithName("DeleteTicket");
     }
 
-    private static async Task<Ok<IEnumerable<Ticket>>> GetTickets(ISender sender)
+    private static async Task<Ok<IEnumerable<TicketBriefDto>>> GetTickets(ISender sender)
     {
         return TypedResults.Ok(await sender.Send(new GetTickets()));
     }
@@ -34,7 +34,7 @@ public class Tickets : ICarterModule
         return TypedResults.CreatedAtRoute("GetTicketById", new { id });
     }
     
-    private static async Task<Results<Ok<Ticket>, BadRequest>> GetTicketById(ISender sender, int id)
+    private static async Task<Results<Ok<TicketDetailsDto>, BadRequest>> GetTicketById(ISender sender, int id)
     {
         return TypedResults.Ok(await sender.Send(new GetTicketById(id)));
     }

@@ -5,13 +5,15 @@ using RIMS.Domain.Entities;
 
 namespace RIMS.Application.Tickets.Queries.GetTicketById;
 
-public record GetTicketById(int Id) : IRequest<Ticket>;
+public record GetTicketById(int Id) : IRequest<TicketDetailsDto>;
 
-public class GetTicketByIdHandler(IApplicationDbContext context) : IRequestHandler<GetTicketById, Ticket>
+public class GetTicketByIdHandler(IApplicationDbContext context, IMapper mapper) : IRequestHandler<GetTicketById, TicketDetailsDto>
 {
-    public async Task<Ticket> Handle(GetTicketById request, CancellationToken cancellationToken)
+    public async Task<TicketDetailsDto> Handle(GetTicketById request, CancellationToken cancellationToken)
     {
-        var entity = await context.Tickets.FirstOrDefaultAsync(t => t.Id == request.Id, cancellationToken);
+        var entity = await context.Tickets
+            .ProjectTo<TicketDetailsDto>(mapper.ConfigurationProvider)
+            .FirstOrDefaultAsync(t => t.Id == request.Id, cancellationToken);
         
         if (entity == null)
         {

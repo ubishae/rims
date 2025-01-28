@@ -60,7 +60,7 @@ public class ApplicationDbContextInitializer(
             {
                 new Ticket { Title = Faker.Lorem.Sentence() },
                 new Ticket { Title = Faker.Lorem.Sentence() },
-                new Ticket { Title = Faker.Lorem.Sentence() }
+                new Ticket { Title = Faker.Lorem.Sentence() },
             });
 
             await context.SaveChangesAsync();
