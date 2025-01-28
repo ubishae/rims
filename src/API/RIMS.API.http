@@ -1,0 +1,6 @@
+@RIMS.API_HostAddress = http://localhost:5285
+
+GET {{RIMS.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
