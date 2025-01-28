@@ -50,7 +50,7 @@ public class ApplicationDbContextInitializer(
         }
     }
 
-    public async Task TrySeedAsync()
+    private async Task TrySeedAsync()
     {
         // Default data
         // Seed, if necessary
@@ -58,9 +58,9 @@ public class ApplicationDbContextInitializer(
         {
             await context.Tickets.AddRangeAsync(new []
             {
-                new Ticket { Title = Faker.Lorem.Words(3).ToString() },
-                new Ticket { Title = Faker.Lorem.Words(3).ToString() },
-                new Ticket { Title = Faker.Lorem.Words(3).ToString() }
+                new Ticket { Title = Faker.Lorem.Sentence() },
+                new Ticket { Title = Faker.Lorem.Sentence() },
+                new Ticket { Title = Faker.Lorem.Sentence() }
             });
 
             await context.SaveChangesAsync();
