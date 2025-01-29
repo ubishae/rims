@@ -5,6 +5,7 @@ namespace RIMS.Application.Common.Interfaces;
 
 public interface IApplicationDbContext
 {
+    DbSet<RiskCategory> RiskCategories { get; }
     DbSet<Ticket> Tickets { get; }
     
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
