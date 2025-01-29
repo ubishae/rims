@@ -11,10 +11,11 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from './ui/sidebar'
+import { Link } from '@tanstack/react-router'
 
 const sidebarItems = [
   { icon: Home, label: 'Dashboard', href: '/dashboard' },
-  { icon: BarChart2, label: 'Risk Assessment', href: '/risk-assessment' },
+  { icon: BarChart2, label: 'Risk Assessment', href: '/risks/assessments' },
   { icon: AlertTriangle, label: 'Alerts', href: '/alerts' },
   { icon: Settings, label: 'Settings', href: '/settings' },
 ]
@@ -41,10 +42,10 @@ export function AppSidebar() {
               {sidebarItems.map((item) => (
                 <SidebarMenuItem key={item.label}>
                   <SidebarMenuButton asChild>
-                    <a href={item.href}>
+                    <Link to={item.href}>
                       <item.icon className="mr-2 h-4 w-4" />
                       {item.label}
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

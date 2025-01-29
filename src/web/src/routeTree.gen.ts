@@ -11,10 +11,19 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as SettingsImport } from './routes/settings'
 import { Route as DashboardImport } from './routes/dashboard'
+import { Route as AlertsImport } from './routes/alerts'
 import { Route as IndexImport } from './routes/index'
+import { Route as RisksAssessmentsImport } from './routes/risks.assessments'
 
 // Create/Update Routes
+
+const SettingsRoute = SettingsImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const DashboardRoute = DashboardImport.update({
   id: '/dashboard',
@@ -22,9 +31,21 @@ const DashboardRoute = DashboardImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AlertsRoute = AlertsImport.update({
+  id: '/alerts',
+  path: '/alerts',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const RisksAssessmentsRoute = RisksAssessmentsImport.update({
+  id: '/risks/assessments',
+  path: '/risks/assessments',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -39,11 +60,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/alerts': {
+      id: '/alerts'
+      path: '/alerts'
+      fullPath: '/alerts'
+      preLoaderRoute: typeof AlertsImport
+      parentRoute: typeof rootRoute
+    }
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardImport
+      parentRoute: typeof rootRoute
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsImport
+      parentRoute: typeof rootRoute
+    }
+    '/risks/assessments': {
+      id: '/risks/assessments'
+      path: '/risks/assessments'
+      fullPath: '/risks/assessments'
+      preLoaderRoute: typeof RisksAssessmentsImport
       parentRoute: typeof rootRoute
     }
   }
@@ -53,37 +95,58 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/alerts': typeof AlertsRoute
   '/dashboard': typeof DashboardRoute
+  '/settings': typeof SettingsRoute
+  '/risks/assessments': typeof RisksAssessmentsRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/alerts': typeof AlertsRoute
   '/dashboard': typeof DashboardRoute
+  '/settings': typeof SettingsRoute
+  '/risks/assessments': typeof RisksAssessmentsRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/alerts': typeof AlertsRoute
   '/dashboard': typeof DashboardRoute
+  '/settings': typeof SettingsRoute
+  '/risks/assessments': typeof RisksAssessmentsRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard'
+  fullPaths: '/' | '/alerts' | '/dashboard' | '/settings' | '/risks/assessments'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard'
-  id: '__root__' | '/' | '/dashboard'
+  to: '/' | '/alerts' | '/dashboard' | '/settings' | '/risks/assessments'
+  id:
+    | '__root__'
+    | '/'
+    | '/alerts'
+    | '/dashboard'
+    | '/settings'
+    | '/risks/assessments'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AlertsRoute: typeof AlertsRoute
   DashboardRoute: typeof DashboardRoute
+  SettingsRoute: typeof SettingsRoute
+  RisksAssessmentsRoute: typeof RisksAssessmentsRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AlertsRoute: AlertsRoute,
   DashboardRoute: DashboardRoute,
+  SettingsRoute: SettingsRoute,
+  RisksAssessmentsRoute: RisksAssessmentsRoute,
 }
 
 export const routeTree = rootRoute
@@ -97,14 +160,26 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/dashboard"
+        "/alerts",
+        "/dashboard",
+        "/settings",
+        "/risks/assessments"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
+    "/alerts": {
+      "filePath": "alerts.tsx"
+    },
     "/dashboard": {
       "filePath": "dashboard.tsx"
+    },
+    "/settings": {
+      "filePath": "settings.tsx"
+    },
+    "/risks/assessments": {
+      "filePath": "risks.assessments.tsx"
     }
   }
 }
