@@ -14,4 +14,6 @@ public class Risk : BaseAuditableEntity
     
     public int? RiskCategoryId { get; set; }
     public RiskCategory? RiskCategory { get; set; }
+    
+    public List<Ticket>? Tickets { get; set; }
 }
