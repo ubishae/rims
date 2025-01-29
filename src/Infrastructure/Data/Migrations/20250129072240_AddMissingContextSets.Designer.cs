@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RIMS.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using RIMS.Infrastructure.Data;
 namespace RIMS.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250129072240_AddMissingContextSets")]
+    partial class AddMissingContextSets
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,7 +42,7 @@ namespace RIMS.Infrastructure.Data.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal?>("ImpactScore")
+                    b.Property<decimal>("ImpactScore")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTimeOffset>("LastModified")
@@ -48,16 +51,16 @@ namespace RIMS.Infrastructure.Data.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal?>("ProbabilityScore")
+                    b.Property<decimal>("ProbabilityScore")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int?>("RiskCategoryId")
+                    b.Property<int>("RiskCategoryId")
                         .HasColumnType("int");
 
-                    b.Property<decimal?>("RiskScore")
+                    b.Property<decimal>("RiskScore")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int?>("Status")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -118,7 +121,7 @@ namespace RIMS.Infrastructure.Data.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("DueDate")
+                    b.Property<DateTime>("DueDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTimeOffset>("LastModified")
@@ -127,13 +130,13 @@ namespace RIMS.Infrastructure.Data.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Priority")
+                    b.Property<int>("Priority")
                         .HasColumnType("int");
 
-                    b.Property<int?>("RiskId")
+                    b.Property<int>("RiskId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Status")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -150,7 +153,9 @@ namespace RIMS.Infrastructure.Data.Migrations
                 {
                     b.HasOne("RIMS.Domain.Entities.RiskCategory", "RiskCategory")
                         .WithMany()
-                        .HasForeignKey("RiskCategoryId");
+                        .HasForeignKey("RiskCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("RiskCategory");
                 });
@@ -159,7 +164,9 @@ namespace RIMS.Infrastructure.Data.Migrations
                 {
                     b.HasOne("RIMS.Domain.Entities.Risk", "Risk")
                         .WithMany()
-                        .HasForeignKey("RiskId");
+                        .HasForeignKey("RiskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Risk");
                 });

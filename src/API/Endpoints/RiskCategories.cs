@@ -6,66 +6,66 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.RateLimiting;
 using RIMS.Application.Common.Models;
-using RIMS.Application.Tickets.Commands.CreateTicket;
-using RIMS.Application.Tickets.Commands.DeleteTicket;
-using RIMS.Application.Tickets.Commands.UpdateTicket;
-using RIMS.Application.Tickets.Queries.GetTicketById;
-using RIMS.Application.Tickets.Queries.GetTickets;
+using RIMS.Application.RiskCategories.Commands.CreateRiskCategory;
+using RIMS.Application.RiskCategories.Commands.DeleteRiskCategory;
+using RIMS.Application.RiskCategories.Commands.UpdateRiskCategory;
+using RIMS.Application.RiskCategories.Queries.GetRiskCategories;
+using RIMS.Application.RiskCategories.Queries.GetRiskCategoryById;
 using RIMS.Domain.Entities;
 
 namespace RIMS.API.Endpoints;
 
 /// <summary>
-/// Endpoints for managing tickets.
+/// Endpoints for managing risk categories.
 /// </summary>
 // [Authorize]
-public class Tickets : ICarterModule
+public class RiskCategories : ICarterModule
 {
-    private const string BaseRoute = "api/v1/tickets";
+    private const string BaseRoute = "api/v1/risks/categories";
     
     public void AddRoutes(IEndpointRouteBuilder app)
     {
         var group = app.MapGroup(BaseRoute)
-            .WithTags("Tickets")
+            .WithTags("Risk Categories")
             //.RequireAuthorization()
             //.RequireRateLimiting("fixed");
             .WithOpenApi();
         
-        group.MapGet("/", GetTickets)
-            .WithName("GetTickets")
-            .WithDescription("Get all tickets")
-            .Produces<IEnumerable<TicketBriefDto>>(StatusCodes.Status200OK)
+        group.MapGet("/", GetRiskCategories)
+            .WithName("GetRiskCategories")
+            .WithDescription("Get all risk categories")
+            .Produces<IEnumerable<RiskCategoryBriefDto>>(StatusCodes.Status200OK)
             .ProducesProblem(StatusCodes.Status401Unauthorized)
             .ProducesProblem(StatusCodes.Status403Forbidden);
             
-        group.MapPost("", CreateTicket)
-            .WithName("CreateTicket")
-            .WithDescription("Create a new ticket")
+        group.MapPost("", CreateRiskCategory)
+            .WithName("CreateRiskCategory")
+            .WithDescription("Create a new risk category")
             .Produces<int>(StatusCodes.Status201Created)
             .ProducesValidationProblem()
             .ProducesProblem(StatusCodes.Status401Unauthorized)
             .ProducesProblem(StatusCodes.Status403Forbidden);
             
-        group.MapGet("/{id:int}", GetTicketById)
-            .WithName("GetTicketById")
-            .WithDescription("Get a ticket by ID")
-            .Produces<TicketDetailsDto>(StatusCodes.Status200OK)
+        group.MapGet("/{id:int}", GetRiskCategoryById)
+            .WithName("GetRiskCategoryById")
+            .WithDescription("Get a risk category by ID")
+            .Produces<RiskCategoryDetailsDto>(StatusCodes.Status200OK)
             .ProducesProblem(StatusCodes.Status404NotFound)
             .ProducesProblem(StatusCodes.Status401Unauthorized)
             .ProducesProblem(StatusCodes.Status403Forbidden);
             
-        group.MapPut("/{id:int}", UpdateTicket)
-            .WithName("UpdateTicket")
-            .WithDescription("Update an existing ticket")
+        group.MapPut("/{id:int}", UpdateRiskCategory)
+            .WithName("UpdateRiskCategory")
+            .WithDescription("Update an existing risk category")
             .Produces(StatusCodes.Status204NoContent)
             .ProducesValidationProblem()
             .ProducesProblem(StatusCodes.Status404NotFound)
             .ProducesProblem(StatusCodes.Status401Unauthorized)
             .ProducesProblem(StatusCodes.Status403Forbidden);
             
-        group.MapDelete("/{id:int}", DeleteTicket)
-            .WithName("DeleteTicket")
-            .WithDescription("Delete a ticket")
+        group.MapDelete("/{id:int}", DeleteRiskCategory)
+            .WithName("DeleteRiskCategory")
+            .WithDescription("Delete a risk category")
             .Produces(StatusCodes.Status204NoContent)
             .ProducesProblem(StatusCodes.Status404NotFound)
             .ProducesProblem(StatusCodes.Status401Unauthorized)
@@ -73,23 +73,23 @@ public class Tickets : ICarterModule
     }
 
     /// <summary>
-    /// Get all tickets.
+    /// Get all risk categories.
     /// </summary>
     /// <param name="sender">MediatR sender.</param>
-    /// <returns>List of tickets.</returns>
-    private static async Task<Ok<IEnumerable<TicketBriefDto>>> GetTickets(ISender sender)
+    /// <returns>List of risk categories.</returns>
+    private static async Task<Ok<IEnumerable<RiskCategoryBriefDto>>> GetRiskCategories(ISender sender)
     {
-        return TypedResults.Ok(await sender.Send(new GetTickets()));
+        return TypedResults.Ok(await sender.Send(new GetRiskCategories()));
     }
     
     /// <summary>
-    /// Create a new ticket.
+    /// Create a new risk category.
     /// </summary>
     /// <param name="sender">MediatR sender.</param>
     /// <param name="request">Create request.</param>
-    /// <returns>Created ticket ID.</returns>
-    private static async Task<Results<Created<int>, ValidationProblem>> CreateTicket(
-        ISender sender, CreateTicket request)
+    /// <returns>Created risk category ID.</returns>
+    private static async Task<Results<Created<int>, ValidationProblem>> CreateRiskCategory(
+        ISender sender, CreateRiskCategory request)
     {
         ArgumentNullException.ThrowIfNull(request);
         
@@ -110,17 +110,17 @@ public class Tickets : ICarterModule
     }
     
     /// <summary>
-    /// Get a ticket by ID.
+    /// Get a risk category by ID.
     /// </summary>
     /// <param name="sender">MediatR sender.</param>
-    /// <param name="id">Ticket ID.</param>
-    /// <returns>Ticket details.</returns>
-    private static async Task<Results<Ok<TicketDetailsDto>, NotFound>> GetTicketById(
+    /// <param name="id">Risk category ID.</param>
+    /// <returns>Risk category details.</returns>
+    private static async Task<Results<Ok<RiskCategoryDetailsDto>, NotFound>> GetRiskCategoryById(
         ISender sender, int id)
     {
         try
         {
-            return TypedResults.Ok(await sender.Send(new GetTicketById(id)));
+            return TypedResults.Ok(await sender.Send(new GetRiskCategoryById(id)));
         }
         catch (NotFoundException)
         {
@@ -129,14 +129,14 @@ public class Tickets : ICarterModule
     }
     
     /// <summary>
-    /// Update an existing ticket.
+    /// Update an existing risk category.
     /// </summary>
     /// <param name="sender">MediatR sender.</param>
-    /// <param name="id">Ticket ID.</param>
+    /// <param name="id">Risk category ID.</param>
     /// <param name="request">Update request.</param>
     /// <returns>No content if successful.</returns>
-    private static async Task<Results<NoContent, NotFound, ValidationProblem>> UpdateTicket(
-        ISender sender, int id, UpdateTicket request)
+    private static async Task<Results<NoContent, NotFound, ValidationProblem>> UpdateRiskCategory(
+        ISender sender, int id, UpdateRiskCategory request)
     {
         ArgumentNullException.ThrowIfNull(request);
         
@@ -169,16 +169,16 @@ public class Tickets : ICarterModule
     }
     
     /// <summary>
-    /// Delete a ticket.
+    /// Delete a risk category.
     /// </summary>
     /// <param name="sender">MediatR sender.</param>
-    /// <param name="id">Ticket ID.</param>
+    /// <param name="id">Risk category ID.</param>
     /// <returns>No content if successful.</returns>
-    private static async Task<Results<NoContent, NotFound>> DeleteTicket(ISender sender, int id)
+    private static async Task<Results<NoContent, NotFound>> DeleteRiskCategory(ISender sender, int id)
     {
         try
         {
-            await sender.Send(new DeleteTicket(id));
+            await sender.Send(new DeleteRiskCategory(id));
             return TypedResults.NoContent();
         }
         catch (NotFoundException)

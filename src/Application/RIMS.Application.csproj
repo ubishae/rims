@@ -23,4 +23,9 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="RiskCategories\" />
+    <Folder Include="Risks\" />
+  </ItemGroup>
+
 </Project>
