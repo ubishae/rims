@@ -11,7 +11,7 @@ public record CreateTicket : IRequest<int>
 
 public class CreateTicketHandler(IApplicationDbContext context) : IRequestHandler<CreateTicket, int>
 {
-    public Task<int> Handle(CreateTicket request, CancellationToken cancellationToken)
+    public async Task<int> Handle(CreateTicket request, CancellationToken cancellationToken)
     {
         var entity = new Ticket()
         {
@@ -20,6 +20,8 @@ public class CreateTicketHandler(IApplicationDbContext context) : IRequestHandle
         
         context.Tickets.Add(entity);
         
-        return context.SaveChangesAsync(cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
+
+        return entity.Id;
     }
 }

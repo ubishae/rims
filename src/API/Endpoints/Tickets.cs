@@ -28,10 +28,10 @@ public class Tickets : ICarterModule
         return TypedResults.Ok(await sender.Send(new GetTickets()));
     }
     
-    private static async Task<CreatedAtRoute> CreateTicket(ISender sender, CreateTicket request)
+    private static async Task<Created<int>> CreateTicket(ISender sender, CreateTicket request)
     {
         var id = await sender.Send(request);
-        return TypedResults.CreatedAtRoute("GetTicketById", new { id });
+        return TypedResults.Created($"/api/v1/tickets/{id}", id);
     }
     
     private static async Task<Results<Ok<TicketDetailsDto>, BadRequest>> GetTicketById(ISender sender, int id)
