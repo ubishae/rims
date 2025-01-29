@@ -10,4 +10,7 @@ public class Ticket : BaseAuditableEntity
     public TicketPriority Priority { get; set; }
     public TicketStatus Status { get; set; }
     public DateTime DueDate { get; set; }
+    
+    public int RiskId { get; set; }
+    public Risk? Risk { get; set; }
 }
