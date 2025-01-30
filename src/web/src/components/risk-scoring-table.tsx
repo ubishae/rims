@@ -8,7 +8,7 @@ import {
 } from './ui/table'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { Skeleton } from './ui/skeleton'
-import { useGetRisks } from '../hooks/use-risk'
+import { useGetRisks } from '@/hooks/use-risk'
 import { Badge } from './ui/badge'
 
 const getRiskLevelVariant = (level?: string) => {
