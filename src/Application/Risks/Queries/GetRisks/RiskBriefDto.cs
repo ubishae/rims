@@ -13,6 +13,7 @@ public class RiskBriefDto
     public decimal ProbabilityScore { get; set; }
     public decimal RiskScore { get; set; }
     public RiskStatus Status { get; set; }
+    public string? Level { get; set; }
     public int CategoryId { get; set; }
     public string? CategoryName { get; set; }
     
@@ -21,7 +22,8 @@ public class RiskBriefDto
         public Mapping()
         {
             CreateMap<Risk, RiskBriefDto>()
-                .ForMember(d => d.CategoryName, opt => opt.MapFrom(s => s.Category != null ? s.Category.Name : null));
+                .ForMember(d => d.CategoryName, opt => opt.MapFrom(s => s.Category != null ? s.Category.Name : null))
+                .ForMember(d => d.Level, opt => opt.MapFrom(s => s.Level != null ? s.Level.ToString() : null));
         }
     }
 }

@@ -65,6 +65,7 @@ public class ApplicationDbContextInitializer(
                 ProbabilityScore = 7,
                 RiskScore = 56,
                 Status = RiskStatus.Active,
+                Level = RiskLevel.High,
                 Category = new RiskCategory()
                 {
                     Name = "Financial Risk",
@@ -84,6 +85,7 @@ public class ApplicationDbContextInitializer(
                 ProbabilityScore = 6,
                 RiskScore = 54,
                 Status = RiskStatus.Identified,
+                Level = RiskLevel.Medium,
                 Category = new RiskCategory()
                 {
                     Name = "Compliance Risk",
@@ -103,6 +105,7 @@ public class ApplicationDbContextInitializer(
                 ProbabilityScore = 8,
                 RiskScore = 56,
                 Status = RiskStatus.Active,
+                Level = RiskLevel.Critical,
                 Category = new RiskCategory()
                 {
                     Name = "Operational Risk",

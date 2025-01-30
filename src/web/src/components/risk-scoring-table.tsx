@@ -9,6 +9,24 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { Skeleton } from './ui/skeleton'
 import { useGetRisks } from '../hooks/use-risk'
+import { Badge } from './ui/badge'
+
+const getRiskLevelVariant = (level?: string) => {
+  switch (level?.toLowerCase()) {
+    case 'negligible':
+      return 'info'
+    case 'low':
+      return 'success'
+    case 'medium':
+      return 'warning'
+    case 'high':
+      return 'destructive'
+    case 'critical':
+      return 'destructive'
+    default:
+      return 'default'
+  }
+}
 
 export function RiskScoringTable() {
   const { data: risks, isLoading, isError, error } = useGetRisks()
@@ -26,6 +44,7 @@ export function RiskScoringTable() {
               <TableHead>Probability</TableHead>
               <TableHead>Impact</TableHead>
               <TableHead>Score</TableHead>
+              <TableHead>Level</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -59,6 +78,7 @@ export function RiskScoringTable() {
                   <TableCell>{risk.probabilityScore?.toFixed(2) || '-'}</TableCell>
                   <TableCell>{risk.impactScore?.toFixed(2) || '-'}</TableCell>
                   <TableCell>{risk.riskScore?.toFixed(2) || '-'}</TableCell>
+                  <TableCell><Badge variant={getRiskLevelVariant(risk.level)}>{risk.level || '-'}</Badge></TableCell>
                 </TableRow>
               ))
             )}

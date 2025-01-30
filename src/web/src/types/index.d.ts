@@ -13,6 +13,7 @@ interface IRisk {
     probabilityScore?: number 
     riskScore?: number 
     status?: RiskStatus 
+    level?: string
     riskCategoryId?: number 
     created?: string;
     createdBy?: string 
