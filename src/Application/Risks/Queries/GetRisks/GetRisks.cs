@@ -14,7 +14,7 @@ public class GetRisksHandler(IApplicationDbContext context, IMapper mapper)
     public async Task<IEnumerable<RiskBriefDto>> Handle(GetRisks request, CancellationToken cancellationToken)
     {
         return await context.Risks
-            .Include(r => r.RiskCategory)
+            .Include(r => r.Category)
             .ProjectTo<RiskBriefDto>(mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
     }

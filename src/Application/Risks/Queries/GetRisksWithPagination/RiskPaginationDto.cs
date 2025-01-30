@@ -19,7 +19,7 @@ public class RiskPaginationDto
         public Mapping()
         {
             CreateMap<Risk, RiskPaginationDto>()
-                .ForMember(d => d.RiskCategoryName, opt => opt.MapFrom(s => s.RiskCategory != null ? s.RiskCategory.Name : null));
+                .ForMember(d => d.RiskCategoryName, opt => opt.MapFrom(s => s.Category != null ? s.Category.Name : null));
         }
     }
 }

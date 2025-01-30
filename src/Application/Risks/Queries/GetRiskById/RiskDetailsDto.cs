@@ -13,8 +13,8 @@ public class RiskDetailsDto
     public decimal ProbabilityScore { get; set; }
     public decimal RiskScore { get; set; }
     public RiskStatus Status { get; set; }
-    public int RiskCategoryId { get; set; }
-    public RiskCategoryDto? RiskCategory { get; set; }
+    public int CategoryId { get; set; }
+    public RiskCategoryDto? Category { get; set; }
     public DateTime Created { get; set; }
     public string? CreatedBy { get; set; }
     public DateTime? LastModified { get; set; }

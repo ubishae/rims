@@ -21,7 +21,7 @@ public class GetRisksWithPaginationHandler(IApplicationDbContext context, IMappe
     public async Task<PaginatedList<RiskPaginationDto>> Handle(GetRisksWithPagination request, CancellationToken cancellationToken)
     {
         var query = context.Risks
-            .Include(x => x.RiskCategory)
+            .Include(x => x.Category)
             .AsQueryable();
 
         if (!string.IsNullOrEmpty(request.SearchString))
@@ -33,7 +33,7 @@ public class GetRisksWithPaginationHandler(IApplicationDbContext context, IMappe
 
         if (request.CategoryId.HasValue)
         {
-            query = query.Where(x => x.RiskCategoryId == request.CategoryId.Value);
+            query = query.Where(x => x.CategoryId == request.CategoryId.Value);
         }
 
         return await query

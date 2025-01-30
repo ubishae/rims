@@ -13,15 +13,15 @@ public class RiskBriefDto
     public decimal ProbabilityScore { get; set; }
     public decimal RiskScore { get; set; }
     public RiskStatus Status { get; set; }
-    public int RiskCategoryId { get; set; }
-    public string? RiskCategoryName { get; set; }
+    public int CategoryId { get; set; }
+    public string? CategoryName { get; set; }
     
     private class Mapping : Profile
     {
         public Mapping()
         {
             CreateMap<Risk, RiskBriefDto>()
-                .ForMember(d => d.RiskCategoryName, opt => opt.MapFrom(s => s.RiskCategory != null ? s.RiskCategory.Name : null));
+                .ForMember(d => d.CategoryName, opt => opt.MapFrom(s => s.Category != null ? s.Category.Name : null));
         }
     }
 }

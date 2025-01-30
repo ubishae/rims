@@ -8,6 +8,7 @@ import { z } from 'zod'
 import { RiskCategorySelect } from './risk-category-select'
 import { FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage, Form } from './ui/form'
 import { Textarea } from './ui/textarea'
+import { useCreateRisk } from '../hooks/use-risk'
 
 
 const formSchema = z.object({
@@ -21,16 +22,20 @@ const formSchema = z.object({
 type FormInput = z.infer<typeof formSchema>
 
 export function RiskAssessmentForm() {
-  const form = useForm({resolver: zodResolver(formSchema), defaultValues: {
+  const form = useForm<FormInput>({resolver: zodResolver(formSchema), defaultValues: {
     title: '',
     description: '',
-    categoryId: '',
+    categoryId: 0,
     probabilityScore: 0,
     impactScore: 0,
   }})
 
+  const createRisk = useCreateRisk<FormInput>()
+
   const onSubmit = (values: FormInput) => {
     console.log(values)
+    createRisk.mutate(values)
+    form.reset()
   }
 
   return (

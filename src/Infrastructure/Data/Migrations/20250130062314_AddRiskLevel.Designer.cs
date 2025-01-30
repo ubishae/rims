@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RIMS.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using RIMS.Infrastructure.Data;
 namespace RIMS.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250130062314_AddRiskLevel")]
+    partial class AddRiskLevel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,9 +32,6 @@ namespace RIMS.Infrastructure.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
 
                     b.Property<DateTimeOffset>("Created")
                         .HasColumnType("datetimeoffset");
@@ -57,6 +57,9 @@ namespace RIMS.Infrastructure.Data.Migrations
                     b.Property<decimal?>("ProbabilityScore")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int?>("RiskCategoryId")
+                        .HasColumnType("int");
+
                     b.Property<decimal?>("RiskScore")
                         .HasColumnType("decimal(18,2)");
 
@@ -68,7 +71,7 @@ namespace RIMS.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("RiskCategoryId");
 
                     b.ToTable("Risks");
                 });
@@ -151,11 +154,11 @@ namespace RIMS.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("RIMS.Domain.Entities.Risk", b =>
                 {
-                    b.HasOne("RIMS.Domain.Entities.RiskCategory", "Category")
+                    b.HasOne("RIMS.Domain.Entities.RiskCategory", "RiskCategory")
                         .WithMany("Risks")
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("RiskCategoryId");
 
-                    b.Navigation("Category");
+                    b.Navigation("RiskCategory");
                 });
 
             modelBuilder.Entity("RIMS.Domain.Entities.Ticket", b =>

@@ -11,9 +11,10 @@ public class Risk : BaseAuditableEntity
     public decimal? ProbabilityScore { get; set; }
     public decimal? RiskScore { get; set; }
     public RiskStatus? Status { get; set; }
+    public RiskLevel? Level { get; set; }
     
-    public int? RiskCategoryId { get; set; }
-    public RiskCategory? RiskCategory { get; set; }
+    public int? CategoryId { get; set; }
+    public RiskCategory? Category { get; set; }
     
     public List<Ticket>? Tickets { get; set; }
 }

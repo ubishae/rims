@@ -15,7 +15,7 @@ public class GetRiskByIdHandler(IApplicationDbContext context, IMapper mapper)
     public async Task<RiskDetailsDto> Handle(GetRiskById request, CancellationToken cancellationToken)
     {
         var risk = await context.Risks
-            .Include(r => r.RiskCategory)
+            .Include(r => r.Category)
             .ProjectTo<RiskDetailsDto>(mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(r => r.Id == request.Id, cancellationToken);
 
